@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phần mềm lập thời gian biểu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <img src="app-logo.png" alt="Logo app thời gian biểu" />
+        <div>
+          <h1>Phần mềm lập thời gian biểu</h1>
+          <p>Thêm lịch bằng tay, nhập CSV/ICS, dán nội dung từ website hoặc đọc lịch từ hình ảnh.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>1. Thêm lịch thủ công</h2>
+      <div class="grid">
+        <input id="title" placeholder="Tên việc / môn học" />
+        <input id="date" type="date" />
+        <input id="start" type="time" />
+        <input id="end" type="time" />
+        <input id="place" placeholder="Địa điểm / link" />
+      </div>
+      <textarea id="note" placeholder="Ghi chú"></textarea>
+      <button onclick="addManualEvent()">Thêm vào thời gian biểu</button>
+    </section>
+
+    <section class="card">
+      <h2>2. Nhập lịch từ hình ảnh</h2>
+      <input type="file" id="imageInput" accept="image/*" />
+      <img id="preview" alt="Ảnh lịch" />
+      <button onclick="readImage()">Đọc chữ từ ảnh</button>
+      <p id="status"></p>
+
+      <textarea id="ocrText" placeholder="Nội dung đọc được từ ảnh sẽ hiện ở đây. Có thể sửa lại nếu nhận diện sai."></textarea>
+      <button onclick="convertOCRToSchedule()">Chuyển ảnh thành lịch và thêm vào thời gian biểu</button>
+
+      <p class="small">Định dạng tốt nhất: Tên việc | 2026-05-20 | 08:00 | 10:00 | Địa điểm</p>
+    </section>
+
+    <section class="card">
+      <h2>3. Dán lịch từ website khác</h2>
+      <textarea id="bulkText" placeholder="Ví dụ:
+Học tiếng Anh | 2026-05-20 | 08:00 | 09:30 | Phòng A
+Làm bài tập MIS | 2026-05-21 | 19:00 | 21:00 | Ở nhà"></textarea>
+      <button onclick="importText()">Nhập nội dung đã dán</button>
+    </section>
+
+    <section class="card">
+      <h2>4. Nhập từ file</h2>
+      <p class="small">Hỗ trợ file .csv và .ics. CSV dùng dạng: title,date,start,end,place,note</p>
+      <input type="file" id="fileInput" accept=".csv,.ics" />
+      <button onclick="importFile()">Nhập file</button>
+    </section>
+
+    <section class="card">
+      <h2>5. Thời gian biểu</h2>
+      <div class="actions">
+        <button onclick="downloadCSV()">Tải CSV</button>
+        <button onclick="downloadICS()">Tải lịch .ICS</button>
+        <button class="danger" onclick="clearAll()">Xóa tất cả</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Ngày</th>
+            <th>Giờ</th>
+            <th>Nội dung</th>
+            <th>Địa điểm</th>
+            <th>Ghi chú</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
